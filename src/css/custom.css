@@ -1,3 +1,6 @@
+h1, h3{
+    text-align: center;
+}
 .board table {
     border-spacing: 0px;
     border-collapse: separate;
@@ -29,10 +32,17 @@
     border-right: none;
 }
 
-.board td.X {
+.board td.X, span.X {
     color: red;
 }
 
-.board td.O {
+.board td.O, span.O {
     color: blue;
+}
+
+.subtitles{
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 1em auto;
 }

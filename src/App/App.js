@@ -5,17 +5,19 @@ import Board from "../_components/Board.js";
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.moves = 0;
         this.state = {
-            grid_size: 3
+            grid_size: 3,
+            data: {},
+            currentPlayer: ""
         };
 
         this.play = this.play.bind(this);
+        this.changeBoard = this.changeBoard.bind(this);
     }
 
-    init() {
-        //number of moves
+    reset() {
         this.moves = 0;
-
         this.setState({
             data: {},
             currentPlayer: ""
@@ -41,6 +43,10 @@ class App extends React.Component {
             currentPlayer: playerType
         });
         
+    }
+
+    determineDraw(){
+        return (this.moves == Math.pow(this.state.grid_size, 2));
     }
 
     determineWinner(player) {
@@ -82,31 +88,71 @@ class App extends React.Component {
         return false;
     }
 
+    changeBoard(e){
+            this.setState({
+                grid_size: parseInt(e.target.value)
+            });
+            this.reset();
+    }
+
     render() {
+        const nextPlayer = this.moves % 2 === 1 ? 'O' : 'X';
+        const cPlayer = this.state.currentPlayer;
+        let gameEnd = false;
+        let gameOptions = <div>
+                            <div className="subtitles">
+                                <span>Board Size: </span>
+                                <select value={this.state.grid_size} onChange={this.changeBoard}>
+                                    <option value="3">
+                                        3 X 3
+                                    </option>
+                                    <option value="4">
+                                        4 X 4
+                                    </option>
+                                    <option value="5">
+                                        5 X 5
+                                    </option>
+                                    <option value="10">
+                                        10 X 10
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="subtitles">
+                                Next Player: <span className={nextPlayer}>{nextPlayer}</span>
+                            </div>
+                        </div>;
+        
+        if (this.determineWinner(cPlayer)) {
+            gameEnd = true;
+            gameOptions = <div>
+                            <div className="subtitles">
+                                <span>Winner: {cPlayer}</span>
+                            </div>
+                        </div>;
+
+        }else if (this.determineDraw()) {
+            gameEnd = true;
+            gameOptions = <div>
+                            <div className="subtitles">
+                                <span>Draw!</span>
+                            </div>
+                        </div>;
+        }
+        
         return (
             <div>
+                <h1>Tic Tac Toe</h1>
+                {gameOptions}
                 <Board 
-                    data={this.state.data} 
+                    data={this.state.data}
                     grid_size={this.state.grid_size} 
                     play={this.play}
+                    gameEnd={gameEnd}
                 />
             </div>
         );
     }
 
-    componentWillMount() {
-        this.init();
-    }
-
-    componentDidUpdate(){
-        console.log(this.state);
-
-        const cPlayer = this.state.currentPlayer;
-        
-        if (this.determineWinner(cPlayer)) {
-            window.alert(cPlayer + " has won");
-        }
-    }
 }
 
 export {App};
