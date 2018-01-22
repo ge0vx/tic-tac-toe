@@ -22,8 +22,10 @@ class App extends React.Component {
     }
 
     play(row_index, col_index) {
-        console.log(row_index);
-        console.log(col_index);
+        if (this.state.data[row_index + '' + col_index]) {
+            return;
+        }
+        
         //number of moves
         this.moves++;
 
