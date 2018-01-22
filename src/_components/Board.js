@@ -14,7 +14,10 @@ class Board extends React.Component {
                                 {
                                   arrayData.map((value, column_index) => {
                                     return (
-                                        <td key={column_index} className={this.props.data[row_index + '' + column_index]}>
+                                        <td key={column_index} 
+                                            className={this.props.data[row_index + '' + column_index]} 
+                                            onClick={() => { this.props.play(row_index, column_index)}}
+                                        >
                                             {this.props.data[row_index + '' + column_index]}
                                         </td>
                                     )
