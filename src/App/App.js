@@ -46,10 +46,12 @@ class App extends React.Component {
     }
 
     determineDraw(){
+        //if all the grid is filled
         return (this.moves == Math.pow(this.state.grid_size, 2));
     }
 
     determineWinner(player) {
+        //determinating a winner counting the number of filled player's mark ('X' or 'O') horizontally, vertically or diagonally. And compatiring this with the size of the grid
         const grid_size = this.state.grid_size;
         const currentData = this.state.data;
         let vertical_count = 0, horizontal_count = 0, right_to_left_count = 0, left_to_right_count = 0;
@@ -102,7 +104,7 @@ class App extends React.Component {
         let gameOptions = <div>
                             <div className="subtitles">
                                 <span>Board Size: </span>
-                                <select value={this.state.grid_size} onChange={this.changeBoard}>
+                                <select className={"select-style"} value={this.state.grid_size} onChange={this.changeBoard}>
                                     <option value="3">
                                         3 X 3
                                     </option>
@@ -126,7 +128,12 @@ class App extends React.Component {
             gameEnd = true;
             gameOptions = <div>
                             <div className="subtitles">
-                                <span>Winner: {cPlayer}</span>
+                                Winner: <span className={cPlayer}>{cPlayer}</span>
+                            </div>
+                            <div className="subtitles">
+                                <button className="btn" onClick={this.reset.bind(this)}>
+                                    Reset
+                                </button>
                             </div>
                         </div>;
 
@@ -135,6 +142,11 @@ class App extends React.Component {
             gameOptions = <div>
                             <div className="subtitles">
                                 <span>Draw!</span>
+                            </div>
+                            <div className="subtitles">
+                                <button className="btn" onClick={this.reset.bind(this)}>
+                                    Reset
+                                </button>
                             </div>
                         </div>;
         }
